@@ -133,7 +133,7 @@ describe('Runner', () => {
       });
       expect(child_process.spawn).toHaveBeenCalledTimes(1);
       expect(child_process.spawn).toHaveBeenCalledWith(
-        '/path/to/electron/executable',
+        '"/path/to/electron/executable"',
         ['/path/to/fiddle/'],
         {
           args: [],
@@ -168,7 +168,7 @@ describe('Runner', () => {
         });
         expect(child_process.spawn).toHaveBeenCalledTimes(1);
         expect(child_process.spawn).toHaveBeenCalledWith(
-          'xvfb-run',
+          '"xvfb-run"',
           ['--auto-servernum', '/path/to/electron/executable', '/path/to/fiddle/'],
           {
             args: [],
@@ -224,7 +224,7 @@ describe('Runner', () => {
 
       expect(child_process.spawn).toHaveBeenCalledTimes(1);
       expect(child_process.spawn).toHaveBeenCalledWith(
-        '/path/to/electron/executable',
+        '"/path/to/electron/executable"',
         ['/path/to/fiddle/app.asar'],
         expect.anything(),
       );

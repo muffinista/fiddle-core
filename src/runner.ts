@@ -158,7 +158,9 @@ export class Runner {
 
     d(inspect({ exec, args, opts }));
 
-    const child = spawn(exec, args, opts);
+    console.log(`i am calling ${exec.replace(/(\s+)/g, '\\$1')}`);
+    const child = spawn(exec.replace(/(\s+)/g, '\\$1'), args, opts);
+    console.log("*****");
     if (opts.out) {
       child.stdout?.pipe(opts.out);
       child.stderr?.pipe(opts.out);
