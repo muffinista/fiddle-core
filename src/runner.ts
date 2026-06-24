@@ -147,21 +147,24 @@ export class Runner {
 
     // set up the electron binary and the fiddle
     const electronExec = await this.getExec(version);
-    let exec =
-      process.platform === 'win32' && opts.runWithIdentity ? MSIX_EXEC_ALIAS : electronExec;
-    let args = [...(opts.args || []), fiddle.mainPath];
-    if (opts.headless) ({ exec, args } = Runner.headless(exec, args));
+    const electronFolder = path.dirname(electronExec);
+    const electronBin = path.basename(electronExec);
 
+    let exec =
+      process.platform === 'win32' && opts.runWithIdentity ? MSIX_EXEC_ALIAS : electronBin;
+
+    let args = [...(opts.args || []), fiddle.mainPath];
+    console.log("HEY", electronExec, exec, args);
+    if (opts.headless) ({ exec, args } = Runner.headless(electronExec, args));
+    console.log("HEY2", electronExec, exec, args);
     if (opts.out && opts.showConfig) {
       opts.out.write(`${this.spawnInfo(version, electronExec, fiddle)}\n`);
     }
 
     d(inspect({ exec, args, opts }));
 
-
-    console.log(`i am calling ${exec.replace(/(\s+)/g, '\\$1')}`);
-    const child = spawn(exec.replace(/(\s+)/g, '\\$1'), args, opts);
-    console.log("*****");
+    opts.cwd = electronFolder;
+    const child = spawn(exec, args, opts);
     if (opts.out) {
       child.stdout?.pipe(opts.out);
       child.stderr?.pipe(opts.out);
